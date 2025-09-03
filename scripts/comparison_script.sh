@@ -19,7 +19,7 @@ APARCASEG="aparc+aseg.mgz"
 # ----------------------------
 # 2) CAPTURE PIPELINE ARGUMENTS
 # ----------------------------
-# The user calls this script with something like: 
+# The user calls this script with something like:
 #    ./my_freeview_script.sh "recon-any_t1*"
 #
 # This loop will expand that pattern (or patterns) against BASEDIR
@@ -81,7 +81,7 @@ for (( i=START; i<${#subjects[@]}; i++ )); do
   # 4A) LOOP OVER PIPELINES
   # ----------------------------
   for pipeline_dir in "${pipelines[@]}"; do
-    
+
     # Attempt to find the subject's session directory
     # Example path:
     #   pipeline_dir/sub-NDARINV00HEV6HB/ses-XXXX/fs_out/sub-NDARINV00HEV6HB/mri
@@ -146,4 +146,3 @@ for (( i=START; i<${#subjects[@]}; i++ )); do
 done
 
 echo "All subjects processed."
-

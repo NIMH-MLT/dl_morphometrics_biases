@@ -5,7 +5,8 @@ This module contains reusable functions for processing brain morphometry data,
 particularly for handling hemisphere-specific data and region name extraction.
 """
 
-from typing import Set, Optional
+from typing import Optional
+
 import pandas as pd
 
 
@@ -34,7 +35,7 @@ def strip_to_hemi(col: str) -> Optional[str]:
     return None
 
 
-def get_region_names(df: pd.DataFrame) -> Set[str]:
+def get_region_names(df: pd.DataFrame) -> set[str]:
     """
     Extract the set of region names (ending in _lh or _rh)
     from df.columns, stripping off any trailing diff‐suffixes.
