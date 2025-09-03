@@ -36,7 +36,7 @@ DEFAULT_BRAIN_METRICS = (
     "lhCerebralWhiteMatterVol,rhCerebralWhiteMatterVol,CerebralWhiteMatterVol"
 )
 BRAINVOL_NAME = "brainvol.stats"
-OUT_SUBDIR = "output"
+OUT_SUBDIR = "leej3/fs_stats_multi"
 
 _BV_RE = re.compile(r"^#\s+Measure\s+([^,]+),\s*([^,]+),[^,]*,\s*([0-9.eE+-]+)")
 
