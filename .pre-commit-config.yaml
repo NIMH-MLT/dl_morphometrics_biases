@@ -1,0 +1,22 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-case-conflict
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.4
+    hooks:
+      - id: ruff
+        args: [--fix, --unsafe-fixes, --ignore=B007]
+        exclude: 'notebooks/check_numbers\.ipynb'
+      - id: ruff-format
+        exclude: 'notebooks/check_numbers\.ipynb'
+
+# Note: nbstripout is configured as a git filter in .gitattributes
+# rather than a pre-commit hook to avoid working copy modification issues
