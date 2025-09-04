@@ -88,10 +88,14 @@ rany_groups = ["anyt1", "anyt1r3", "anyt1r5", "anyt2", "any1any2"]
 # Update these as needed for your local setup
 project_dir = Path("/data/ABCD_MBDU/ohbm2024/")
 drv_dir = project_dir / "data/derivatives/"
+abcd_data = Path("/data/ABCD_DSST/ABCD")
 stats_dir = drv_dir / "leej3/fs_stats_multi"
 tpl_root = project_dir / "templateflow" / "tpl-fsaverage"
-age_tsv = "/data/ABCD_DSST/ABCD/imaging_data/fast_track/sessions.tsv"
-fastages_tsv = "/data/ABCD_DSST/ABCD/imaging_data/fast_track/code/abcd_fastqc01_history/2024-05-01/abcd_fastqc01_ages_innerjoin_sessions_without_age.tsv"
+age_tsv = abcd_data / "imaging_data/fast_track/sessions.tsv"
+fastages_tsv = (
+    abcd_data
+    / "imaging_data/fast_track/code/abcd_fastqc01_history/2024-05-01/abcd_fastqc01_ages_innerjoin_sessions_without_age.tsv"
+)
 
 path_inputs = [drv_dir / "freesurfer" / p[0] for p in pipelines]
 
