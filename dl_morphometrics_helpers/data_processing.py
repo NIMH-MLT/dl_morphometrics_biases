@@ -196,6 +196,57 @@ def merge_age_data(df: pd.DataFrame) -> pd.DataFrame:
     return with_all_ages
 
 
+def parse_synthsr_path(path: Path) -> dict[str, str | None]:
+    """
+    Parse a SynthSR file path to extract subject, session, and pipeline information.
+
+    Args:
+        path: Path to SynthSR file
+
+    Returns:
+        Dictionary with subject_id, session_id, pipeline_src, and synth_path, or None if parsing fails
+    """
+    parts = path.parts
+
+    subj_index = parts.index("fs_out") - 1  # subject folder is right before fs_out
+    sess_index = subj_index - 1  # session folder is one level up
+    subject_id = parts[subj_index]  # e.g. 'sub-XXXX'
+    session_id = parts[sess_index] if parts[sess_index].startswith("ses-") else None
+    pipeline_name = parts[parts.index("freesurfer") + 1]  # pipeline directory name
+
+    return {
+        "subject_id": subject_id,
+        "session_id": session_id,
+        "pipeline_src": pipeline_name,
+        "t1_path": str(path),
+    }
+
+
+def get_synthsr_for_pipeline(fs_deriv_dir: Path, pipeline_name: str) -> pd.DataFrame:
+    """
+    Find and catalog SynthSR files across FreeSurfer pipeline outputs.
+
+    Args:
+        fs_deriv_dir: Path to FreeSurfer derivatives directory
+        pipeline_name: Pipeline name to filter for (e.g., 'recon-any_t1')
+
+    Returns:
+        DataFrame with SynthSR file information
+    """
+    synth_files = []
+    pipeline_dir = fs_deriv_dir / pipeline_name
+    assert pipeline_dir.exists()
+    synth_files.extend(pipeline_dir.rglob("*/fs_out/*/mri/*ynthSR.mgz"))
+
+    synth_records = []
+    for path in synth_files:
+        record = parse_synthsr_path(path)
+        if record:
+            synth_records.append(record)
+
+    return pd.DataFrame(synth_records)
+
+
 def load_brain_confounds(pipeline: str, suffix: str) -> pd.DataFrame:
     """
     Load BrainConfounds.tsv for a specific pipeline with proper column naming.
