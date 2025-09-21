@@ -208,21 +208,23 @@ def parse_synthsr_path(path: Path) -> dict[str, str | None]:
     """
     parts = path.parts
 
-    subj_index = parts.index("fs_out") - 1  # subject folder is right before fs_out
-    sess_index = subj_index - 1  # session folder is one level up
+    subj_index = parts.index("fs_out") - 2
+    sess_index = parts.index("fs_out") - 1
     subject_id = parts[subj_index]  # e.g. 'sub-XXXX'
     session_id = parts[sess_index] if parts[sess_index].startswith("ses-") else None
     pipeline_name = parts[parts.index("freesurfer") + 1]  # pipeline directory name
 
     return {
-        "subject_id": subject_id,
-        "session_id": session_id,
+        "subject": subject_id,
+        "session": session_id,
         "pipeline_src": pipeline_name,
         "t1_path": str(path),
     }
 
 
-def get_synthsr_for_pipeline(fs_deriv_dir: Path, pipeline_name: str) -> pd.DataFrame:
+def get_synthsr_for_pipeline(
+    fs_deriv_dir: Path, pipeline_name: str, glob_pattern="*/*/fs_out/*/mri/SynthSR.mgz"
+) -> pd.DataFrame:
     """
     Find and catalog SynthSR files across FreeSurfer pipeline outputs.
 
@@ -236,7 +238,7 @@ def get_synthsr_for_pipeline(fs_deriv_dir: Path, pipeline_name: str) -> pd.DataF
     synth_files = []
     pipeline_dir = fs_deriv_dir / pipeline_name
     assert pipeline_dir.exists()
-    synth_files.extend(pipeline_dir.rglob("*/fs_out/*/mri/*ynthSR.mgz"))
+    synth_files.extend(pipeline_dir.glob(glob_pattern))
 
     synth_records = []
     for path in synth_files:

@@ -72,10 +72,10 @@ def build_fs_swarm_cmd(
 
     # Compose single-line swarm command (no leading spaces/newlines)
     swarm_exec = (
-        f"swarm -f {swarm_cmd_file.resolve()} "
+        f"swarm -f {swarm_cmd_file.absolute()} "
         f"-g {g_mem} -t {ncpus} --gres=lscratch:{lscratch} "
         f"--module {module_arg} --time {time} "
-        f"--logdir {swarm_log_dir.resolve()} --job-name {run_name} "
+        f"--logdir {swarm_log_dir.absolute()} --job-name {run_name} "
         f"--partition {partition}"
     )
 
