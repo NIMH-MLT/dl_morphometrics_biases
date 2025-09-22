@@ -39,7 +39,7 @@ This project uses [uv](https://github.com/astral-sh/uv) for fast, reliable Pytho
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Install the package in development mode with all dependencies
-uv pip install -e ".[analysis,dev]"
+uv sync --all-extras
 ```
 
 ### Running Scripts
@@ -57,7 +57,7 @@ uv run scripts/fsstats_extraction.py --help
 
 ```bash
 # Start JupyterLab with all analysis dependencies
-uv run --with "jupyterlab" jupyter lab
+uv run jupyter lab
 ```
 
 ## Development Workflow
@@ -113,10 +113,10 @@ git config diff.ipynb.textconv 'nbstripout -t'
 
 ## Analysis Pipeline
 
-1. **Data Processing**: Use `scripts/fsstats_extraction.py` to extract FreeSurfer statistics
-2. **Exploration**: Run notebooks in `notebooks/` directory for analysis
-3. **Figure Generation**: Use `notebooks/figures.ipynb` to create publication figures
-4. **Outputs**: All results saved to `output/` directory, figures to `output/images/`
+1. **Stats Extraction**:  `scripts/fsstats_extraction.py` to extract FreeSurfer statistics (tricky dependencies involved)
+2. **Other exploration/figures**: Run notebooks in `notebooks/`
+3. **Outputs**: Most results saved to `output/` directory, figures to `output/images/`
+4. **Swarm output**: Larger datasets (freesurfer derivatives, swarm files etc.) are stored in the appropriate cluster dirs.
 
 ## Contributing
 

@@ -32,11 +32,13 @@ atlases = ["", ".a2009s", ".DKTatlas"]
 pipelines = [
     ("recon-all", "_ra", "inner"),
     # ('recon-all-8',                       '_ra8',      'inner'),
+    ("recon-all-8_1", "_ra81", "inner"),
     ("recon-all_clinical_t1", "_ract1", "inner"),
     ("recon-all_clinical_t2", "_ract2", "inner"),
     ("recon-all_clinical_t1_resample-3", "_ract1r3", "inner"),
     ("recon-all_clinical_t1_resample-5", "_ract1r5", "inner"),
     # ('recon-all_not2',                  '_ranot2',  'inner'),
+    ("synthsr-rac-with-skullstrip", "_raseed", "inner"),
     ("recon-any_t2", "_ranyt2", "inner"),
     ("recon-any_t1", "_ranyt1", "inner"),
     ("recon-any_t1_resample-3", "_ranyt1r3", "inner"),
@@ -47,6 +49,7 @@ pipelines = [
 diff_specs = {
     # key: (base_suffix, comp_suffix)
     # 'all8':    ('_ra',      '_ra8'),
+    "all81": ("_ra", "_ra81"),
     "ct1": ("_ra", "_ract1"),
     "ct2": ("_ra", "_ract2"),
     "ct1r3": ("_ra", "_ract1r3"),
@@ -58,11 +61,14 @@ diff_specs = {
     "anyt1r3": ("_ra", "_ranyt1r3"),
     "anyt1r5": ("_ra", "_ranyt1r5"),
     "any1any2": ("_ranyt1", "_ranyt2"),
+    # SynthSR‑seeded recon‑all vs 8.1 baseline
+    "raseed81": ("_ra81", "_raseed"),
 }
 
 comparison_labels = {
     # key: LABEL
     "all8": "RA_7-vs-8",
+    "all81": "RA_7-vs-8.1",
     "ct1": "RAC_T1",
     "ct2": "RAC_T2",
     "ct1r3": "RAC_T1-R3",
@@ -74,11 +80,16 @@ comparison_labels = {
     "anyt1r3": "RANY_T1-R3",
     "anyt1r5": "RANY_T1-R5",
     "any1any2": "RANY_T1-vs-T2",
+    # SynthSR‑seeded recon‑all label
+    "raseed81": "RA_seeded_RAC_SynthSR",
 }
 
 # RAC / RANY split
 rac_groups = ["ct1", "ct1r3", "ct1r5", "ct2", "ct1ct2"]
 rany_groups = ["anyt1", "anyt1r3", "anyt1r5", "anyt2", "any1any2"]
+
+# Optional RA variant comparisons (legacy vs 8.1, and 8.1 vs SynthSR‑seeded)
+ra_variant_groups = ["all81", "raseed81"]
 
 # ============================================================================
 # PATH CONFIGURATION
@@ -88,10 +99,14 @@ rany_groups = ["anyt1", "anyt1r3", "anyt1r5", "anyt2", "any1any2"]
 # Update these as needed for your local setup
 project_dir = Path("/data/ABCD_MBDU/ohbm2024/")
 drv_dir = project_dir / "data/derivatives/"
+abcd_data = Path("/data/ABCD_DSST/ABCD")
 stats_dir = drv_dir / "leej3/fs_stats_multi"
 tpl_root = project_dir / "templateflow" / "tpl-fsaverage"
-age_tsv = "/data/ABCD_DSST/ABCD/imaging_data/fast_track/sessions.tsv"
-fastages_tsv = "/data/ABCD_DSST/ABCD/imaging_data/fast_track/code/abcd_fastqc01_history/2024-05-01/abcd_fastqc01_ages_innerjoin_sessions_without_age.tsv"
+age_tsv = abcd_data / "imaging_data/fast_track/sessions.tsv"
+fastages_tsv = (
+    abcd_data
+    / "imaging_data/fast_track/code/abcd_fastqc01_history/2024-05-01/abcd_fastqc01_ages_innerjoin_sessions_without_age.tsv"
+)
 
 path_inputs = [drv_dir / "freesurfer" / p[0] for p in pipelines]
 
